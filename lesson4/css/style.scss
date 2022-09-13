@@ -1,0 +1,92 @@
+*{
+    padding: 0;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+.container{
+    max-width: 768px
+}
+.header{
+    font-size: 32px;
+    font-weight: 600;
+    text-align: center;
+    text-shadow: 1px 1px 1px rgb(42, 170, 174);
+    margin-bottom: 30px;
+}
+.button {
+    padding: 8px 24px;
+    color: white;
+    background-color: rgb(42, 170, 174);
+    border: none;
+    
+}
+.button:hover {
+    background-color: rgb(59, 225, 231);
+    cursor: pointer;
+}
+.payment_input{
+    width:350px;
+    height: 42px;
+    font-weight: 600;
+    font-size: 26px;
+    color: rgb(42, 170, 174);
+    border: 1px solid rgb(42, 170, 174);
+    border-radius: 5px;
+    box-shadow: 2px 2px 1px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.payment_input:focus{
+    outline: 1px solid rgb(42, 170, 174);
+    
+}
+.payment_input:focus::placeholder{
+    color: transparent
+}
+::placeholder{
+    color: rgb(173, 240, 243);
+    font-weight: normal;
+}
+.inputBox{
+    margin-top: 60px;
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    min-width: 370px;
+    gap: 30px;
+    border: 1px solid rgb(42, 170, 174);
+    align-content: left;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    border-radius: 5px;
+}
+.inside{
+    margin-top: 0;  
+    background-color: rgb(204, 243, 230);
+}
+.tablePayment{
+    margin-top: 60px;
+    
+}
+.rowTable {
+    display: flex;
+    
+}
+.columnTable {
+    width: 25%;
+    border-bottom: 1px solid #ccc;
+    height: 30px;
+    line-height: 30px;
+   
+}
+.h{
+    font-weight: 800 ;
+}
+.page_box{
+    text-align: center;
+    margin-top: 20px;
+}
+.page_link{
+    padding-right: 14px
+}
+
