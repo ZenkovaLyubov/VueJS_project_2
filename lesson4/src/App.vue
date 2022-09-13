@@ -2,7 +2,7 @@
   <div id="app">
     <div class="container">
       <header>
-        <div class="header">My personal costs: </div>
+        <div class="header">My personal costs: {{ totalCost }} </div>
     </header>
     <main>
       <ButtonClicked
@@ -54,10 +54,10 @@ export default {
     currentPage: 1
   }),
   computed: {
-    ...mapGetters(['paymentsList', 'paymentsListByPage', 'categoryList', 'totalCoast', 'pageCount', 'paymentsList_Short', 'addPage5Exist'])
+    ...mapGetters(['paymentsList', 'paymentsListByPage', 'categoryList', 'pageCount', 'paymentsList_Short', 'addPage5Exist', 'totalCost'])
   },
   methods: {
-    ...mapActions(['fetchCategoryData', 'addNewPayment', 'whatchPageCount']),
+    ...mapActions(['fetchCategoryData', 'addNewPayment', 'whatchPageCount', 'countTotalCost']),
     ...mapMutations(['ADD_PAYMENT_DATA']),
 
     addPayment (data) {
@@ -71,6 +71,7 @@ export default {
       this.currentPage = n
       this.$store.dispatch('fetchData', this.currentPage)
       this.paymentsListLoc = this.paymentsListByPage[`page${this.currentPage}`]
+      this.$store.dispatch('countTotalCost')
     }
   },
   created () {

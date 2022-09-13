@@ -133,6 +133,7 @@ export default new Vuex.Store({
     pageCount: 4,
     rowCount: 5,
     idRow: 20,
+    totalCost: 0
   },
   mutations: {
     SET_PAYMENTS_LIST_BY_PAGE (state, { page, initialPaymentsList }) {
@@ -144,6 +145,9 @@ export default new Vuex.Store({
     },
     SET_PAGECOUNT (state, pageCount) {
       state.pageCount = pageCount
+    },
+    SET_TOTAL_COST (state, totalCost) {
+      state.totalCost = totalCost
     }
   },
   getters: {
@@ -153,7 +157,8 @@ export default new Vuex.Store({
     pageCount: (state) => state.pageCount,
     addPage5Exist: (state) => state.addPage5Exist,
     idRow: (state) => state.idRow,
-    showAddForm: (state) => state.showAddForm
+    showAddForm: (state) => state.showAddForm,
+    totalCost: (state) => state.totalCost
   },
   actions: {
     fetchData ({ commit, state }, page) {
@@ -178,6 +183,23 @@ export default new Vuex.Store({
       state.idRow += 1
       commit('ADD_PAYMENT_DATA', newPayment)
       state.rowCount += 1
+    },
+    countTotalCost ({ commit, state }) {
+      let totalCost = 0
+      console.log('1')
+      for (const key in API_DATA) {
+        totalCost += (Object.values(API_DATA[key]).reduce((total, { value }) => total + value, 0))
+      }
+      console.log('2')
+      if (state.pageCount > 4) {
+        console.log('3')
+        console.log(state.pageCount)
+        for (let i = 5; i <= state.pageCount; i++) {
+          totalCost += (Object.values(state.paymentsListByPage[`page${i}`]).reduce((total, { value }) => +total + +value, 0))
+        }
+      }
+      console.log(totalCost)
+      commit('SET_TOTAL_COST', totalCost)
     }
   },
   modules: {
