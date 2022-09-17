@@ -66,6 +66,7 @@ export default {
   created () {
     this.fetchCategoryData()
     this.createPaymentsList(this.currentPage)
+    console.log(this.$route)
   }
 }
 </script>
