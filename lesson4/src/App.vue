@@ -1,28 +1,24 @@
 <template>
   <div id="app">
     <div class="container">
-      <header>
+      <!-- <header>
         <div class="header">My personal costs: {{ totalCost }} </div>
-    </header>
+      </header> -->
+      <header>
+        <nav class="nav_block" @click.prevent="pushHistory">
+        <!-- <a href="/#dashboard" class="router-link">Dashboard</a>
+        <a href="/#about" class="router-link">About</a>
+        <a href="/#notfound" class="router-link">Not Found</a> -->
+        <a href="/dashboard" class="router-link">Dashboard</a>
+        <a href="/about" class="router-link">About</a>
+        <a href="/notfound" class="router-link">Not Found</a>
+        </nav>
+      </header>
+
     <main>
-      <ButtonClicked
-      @clicked="clickedButtonAdd"
-      :showAddForm="showAddForm"
-      :buttonNameShow="`Add new cost +`"
-      :buttonNameHide="`Hide form -`"
-      />
-      <AddPaymentForm v-if="showAddForm"
-      :categoryList="categoryList"
-      @add-payment="addPayment"
-      />
-      <PaymentsDisplay
-        :paymentsList="paymentsListLoc"
-        show
-      />
-      <PagiNation
-      @clickpage="createPaymentsList"
-      :pageCount="pageCount"
-      />
+      <DashBoard v-if="page === 'dashboard'"/>
+      <AboutPage v-if="page === 'about'"/>
+      <NotFound v-if="page === 'notfound'"/>
     </main>
     </div>
   </div>
@@ -31,52 +27,36 @@
 <script>
 
 // import HelloWorld from './components/HelloWorld.vue'
-import PaymentsDisplay from './components/PaymentsDisplay.vue'
-import AddPaymentForm from './components/AddPaymentForm.vue'
-import ButtonClicked from './components/ButtonClicked.vue'
-import PagiNation from './components/Pagination.vue'
-// import AddCategory from './components/AddCategory.vue'
-import { mapActions, mapMutations, mapGetters } from 'vuex'
+import AboutPage from '../pages/AboutPage.vue'
+import NotFound from '../pages/NotFound.vue'
+import DashBoard from '../pages/DashBoard.vue'
 
 export default {
   name: 'App',
   components: {
-    // HelloWorld
-    PaymentsDisplay,
-    AddPaymentForm,
-    ButtonClicked,
-    PagiNation
-    // AddCategory
+    DashBoard,
+    AboutPage,
+    NotFound
   },
   data: () => ({
-    paymentsListLoc: [],
-    showAddForm: false,
-    currentPage: 1
+    page: 'dashboard'
   }),
-  computed: {
-    ...mapGetters(['paymentsList', 'paymentsListByPage', 'categoryList', 'pageCount', 'paymentsList_Short', 'addPage5Exist', 'totalCost'])
-  },
   methods: {
-    ...mapActions(['fetchCategoryData', 'addNewPayment', 'whatchPageCount', 'countTotalCost']),
-    ...mapMutations(['ADD_PAYMENT_DATA']),
-
-    addPayment (data) {
-      this.$store.dispatch('addNewPayment', data)
-      this.createPaymentsList(this.currentPage)
+    setPage () {
+      // console.log(e.target)
+      // this.page = window.location.hash.slice(1)
+      this.page = window.location.pathname.slice(1)
+      console.log(this.page)
     },
-    clickedButtonAdd () {
-      this.showAddForm = !this.showAddForm
-    },
-    createPaymentsList (n) {
-      this.currentPage = n
-      this.$store.dispatch('fetchData', this.currentPage)
-      this.paymentsListLoc = this.paymentsListByPage[`page${this.currentPage}`]
-      this.$store.dispatch('countTotalCost')
+    pushHistory (e) {
+      if (!e.target.classList.contains('router-link')) return
+      window.history.pushState({}, '', e.target.href)
+      this.setPage()
     }
   },
-  created () {
-    this.fetchCategoryData()
-    this.createPaymentsList(this.currentPage)
+  mounted () {
+    // window.addEventListener('hashchange', this.setPage())
+    window.addEventListener('popstate', this.setPage())
   }
 }
 </script>

@@ -49,6 +49,7 @@ export default {
   }),
   methods: {
     addPayment () {
+      console.log(this.categoryList)
       console.log('add', this.currentDate)
       const { value, category, date, currentDate } = this
       const data = {
@@ -57,12 +58,9 @@ export default {
         // date ? date : currentDate
         date: date || currentDate
       }
-      console.log('AddPaymentForm' + data)
-
       this.$emit('add-payment', data)
     },
     clickedButtonAdd () {
-      console.log('1')
       this.showAddFormCategory = !this.showAddFormCategory
     },
     createCategory (datacategory) {

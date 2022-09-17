@@ -168,7 +168,6 @@ export default new Vuex.Store({
       } else {
         const initialPaymentsList = API_DATA[`page${page}`]
         commit('SET_PAYMENTS_LIST_BY_PAGE', { page, initialPaymentsList })
-        console.log('test' + `page${page}`)
       }
     },
     addNewPayment ({ commit, state }, newPayment) {
@@ -186,19 +185,14 @@ export default new Vuex.Store({
     },
     countTotalCost ({ commit, state }) {
       let totalCost = 0
-      console.log('1')
       for (const key in API_DATA) {
         totalCost += (Object.values(API_DATA[key]).reduce((total, { value }) => total + value, 0))
       }
-      console.log('2')
       if (state.pageCount > 4) {
-        console.log('3')
-        console.log(state.pageCount)
         for (let i = 5; i <= state.pageCount; i++) {
           totalCost += (Object.values(state.paymentsListByPage[`page${i}`]).reduce((total, { value }) => +total + +value, 0))
         }
       }
-      console.log(totalCost)
       commit('SET_TOTAL_COST', totalCost)
     }
   },
