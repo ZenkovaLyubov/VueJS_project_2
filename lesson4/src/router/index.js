@@ -14,7 +14,12 @@ const routes = [
   },
   {
     path: '/dashboard/:page',
-    name: 'dashboard',
+    name: 'dashboardPage',
+    component: DashBoard
+  },
+  {
+    path: '/dashboard/add/payment/:category/:value',
+    name: 'AddPayment',
     component: DashBoard
   },
   {
@@ -27,23 +32,23 @@ const routes = [
     path: '/notfound',
     name: 'notfound',
     component: NotFound
-  },
+  }
   // {
   //   path: '*',
   //   component: NotFound
   // }
-  {
-    path: '*',
-    // redirect: '/notfound'
-    redirect: {
-      name: 'notfound'
-    }
-  }
+  // {
+  //   path: '*',
+  //   // redirect: '/notfound'
+  //   redirect: {
+  //     name: 'notfound'
+  //   }
+  // }
 ]
 
 const router = new VueRouter({
   mode: 'history',
-  base: process.env.BASE_URL,
+  // base: process.env.BASE_URL,
   routes
 })
 
@@ -53,14 +58,14 @@ const router = new VueRouter({
 //   else next()
 // })
 
-const titles = {
-  dashboard: 'Dashboard',
-  about: 'About',
-  notfound: 'Not Found'
-}
+// const titles = {
+//   dashboard: 'Dashboard',
+//   about: 'About',
+//   notfound: 'Not Found'
+// }
 
-router.afterEach((to) => {
-  document.title = titles[to.name]
-})
+// router.afterEach((to) => {
+//   document.title = titles[to.name]
+// })
 
 export default router

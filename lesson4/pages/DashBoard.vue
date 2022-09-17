@@ -65,8 +65,13 @@ export default {
   },
   created () {
     this.fetchCategoryData()
+    if (this.$route.params.page) {
+      this.currentPage = Number(this.$route.params.page)
+    }
     this.createPaymentsList(this.currentPage)
-    console.log(this.$route)
+    if (this.$route.name === 'AddPayment') {
+      this.clickedButtonAdd()
+    }
   }
 }
 </script>

@@ -13,9 +13,9 @@
         <!-- <a href="/dashboard" class="router-link">Dashboard</a>
         <a href="/about" class="router-link">About</a>
         <a href="/notfound" class="router-link">Not Found</a> -->
-        <router-link to="dashboard" class="router-link">Dashboard</router-link>
-        <router-link to="about" class="router-link">About</router-link>
-        <router-link to="notfound" class="router-link">Not Found</router-link>
+        <router-link to="/dashboard" class="router-link">Dashboard</router-link>
+        <router-link to="/about" class="router-link">About</router-link>
+        <router-link to="/notfound" class="router-link">Not Found</router-link>
         </nav>
       </header>
 
@@ -24,7 +24,7 @@
       <AboutPage v-if="page === 'about'"/>
       <NotFound v-if="page === 'notfound'"/> -->
       <router-view/>
-      <button @click="goToPage">About</button>
+      <!-- <button @click="goToPage">About</button> -->
     </main>
     </div>
   </div>
@@ -48,15 +48,15 @@ export default {
     // page: 'dashboard'
   }),
   methods: {
-    goToPage () {
-      // this.$router.push('/about')
-      this.$router.push({
-        name: 'about',
-        params: {
-          a: 'qwerty'
-        }
-      })
-    }
+    // goToPage () {
+    //   // this.$router.push('/about')
+    //   this.$router.push({
+    //     name: 'about',
+    //     params: {
+    //       a: 'qwerty'
+    //     }
+    //   })
+    // }
     // setPage () {
     //   // console.log(e.target)
     //   // this.page = window.location.hash.slice(1)

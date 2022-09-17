@@ -76,6 +76,17 @@ export default {
 
       return `${day}.${month}.${year}`
     }
+  },
+  created () {
+    if (this.$route.name === 'AddPayment') {
+      if (this.$route.params.value) {
+        this.value = this.$route.params.value
+      }
+      if (this.$route.params.category) {
+        this.category = this.$route.params.category
+      }
+      this.date = this.currentDate
+    }
   }
 }
 </script>
