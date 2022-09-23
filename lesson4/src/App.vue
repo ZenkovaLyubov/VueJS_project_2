@@ -19,13 +19,20 @@
         </nav>
       </header>
 
-    <main>
-      <!-- <DashBoard v-if="page === 'dashboard'"/>
-      <AboutPage v-if="page === 'about'"/>
-      <NotFound v-if="page === 'notfound'"/> -->
-      <router-view/>
-      <!-- <button @click="goToPage">About</button> -->
-    </main>
+      <main>
+        <!-- <DashBoard v-if="page === 'dashboard'"/>
+        <AboutPage v-if="page === 'about'"/>
+        <NotFound v-if="page === 'notfound'"/> -->
+        <router-view/>
+        <!-- <button @click="goToPage">About</button> -->
+      </main>
+      <transition name="fade">
+        <ModalWindowAddPayment
+      v-if="showModal"
+      :settings="modalSettings"
+      :data="modalData"
+      />
+      </transition>
     </div>
   </div>
 </template>
@@ -36,6 +43,7 @@
 // import AboutPage from '../pages/AboutPage.vue'
 // import NotFound from '../pages/NotFound.vue'
 // import DashBoard from '../pages/DashBoard.vue'
+// import ModalWindowAddPayment from './components/ModalWindowAddPayment.vue'
 
 export default {
   name: 'App',
@@ -43,11 +51,20 @@ export default {
     // DashBoard,
     // AboutPage,
     // NotFound
+    ModalWindowAddPayment: () => import(/* webpackChunkName: "ModalWindow" */ '@/components/ModalWindowAddPayment.vue')
   },
   data: () => ({
     // page: 'dashboard'
+    showModal: false,
+    modalSettings: {},
+    modalData: []
   }),
   methods: {
+    modalOpen (settings, modalData) {
+      this.modalSettings = settings
+      this.showModal = true
+      this.modalData = modalData
+    },
     // goToPage () {
     //   // this.$router.push('/about')
     //   this.$router.push({
@@ -68,12 +85,18 @@ export default {
     //   window.history.pushState({}, '', e.target.href)
     //   this.setPage()
     // }
+    modalClose () {
+      this.showModal = false
+    }
   },
   mounted () {
+    console.log(this.$modal)
     // window.addEventListener('hashchange', this.setPage())
     // window.addEventListener('popstate', this.setPage())
-    console.log(this.$router)
-    console.log(this.$route)
+    // console.log(this.$router)
+    // console.log(this.$route)
+    this.$modal.EventBus.$on('show', this.modalOpen)
+    this.$modal.EventBus.$on('hide', this.modalClose)
   }
 }
 </script>

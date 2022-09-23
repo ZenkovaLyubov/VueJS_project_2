@@ -5,10 +5,11 @@
     <div class="rowTable h"><span class="columnTable">#</span><span class="columnTable">Дата</span><span class="columnTable">Категория</span><span class="columnTable">Значение</span></div>
     <div class="rowTable" v-for="(payment, index) in paymentsList" :key="index"><span class="columnTable">{{index+1}}</span><span class="columnTable">{{payment.date}}</span><span class="columnTable">{{payment.category}}</span><span class="columnTable">{{payment.value}}</span></div></div> -->
     <div class="tablePayment">
-    <div class="rowTable h"><span class="columnTable">#</span><span class="columnTable">Дата</span><span class="columnTable">Категория</span><span class="columnTable">Значение</span></div>
-    <div class="rowTable" v-for="(payment, index) in paymentsList" :key="index"><span class="columnTable">{{payment.id}}</span><span class="columnTable">{{payment.date}}</span><span class="columnTable">{{payment.category}}</span><span class="columnTable">{{payment.value}}</span></div>
+    <div class="rowTable h"><span class="columnTable">#</span><span class="columnTable">Дата</span><span class="columnTable">Категория</span><span class="columnTable">Значение</span><span class="columnTable"></span></div>
+    <div class="rowTable" v-for="(payment, index) in paymentsList" :key="index"><span class="columnTable">{{payment.id}}</span><span class="columnTable">{{payment.date}}</span><span class="columnTable">{{payment.category}}</span><span class="columnTable">{{payment.value}}</span><span class="columnTable"><a href="#" class="linkTable" @click="contextMenu(payment)">...</a></span></div>
+    <!-- <a href="" @click="contextMenu">...</a> -->
+    <!-- <button @click="contextMenu">ContextMenu</button> -->
     </div>
-
 </template>
 
 <script>
@@ -46,6 +47,12 @@ export default {
     //   default: 0
     // },
     show: Boolean
+  },
+  methods: {
+    contextMenu (payment) {
+      this.$store.commit('SET_EDIT_ROW', payment)
+      this.$modal.show({ title: '', content: 'contextMenu' })
+    }
   }
 }
 </script>

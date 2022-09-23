@@ -20,7 +20,7 @@
       @add-category="createCategory"
       />
       <input class="payment_input" type="text" placeholder="Date" v-model="date">
-      <button class="button" @click="addPayment">Add</button>
+      <button class="button" @click="addPayment">Save</button>
     </form>
 
   </div>
@@ -86,6 +86,11 @@ export default {
         this.category = this.$route.params.category
       }
       this.date = this.currentDate
+    }
+    if (this.$store.getters.editRow) {
+      this.value = this.$store.getters.editRow.value
+      this.category = this.$store.getters.editRow.category
+      this.date = this.$store.getters.editRow.date
     }
   }
 }

@@ -1,69 +1,71 @@
 <template>
   <div>
-    <div class="header">My personal costs: {{ totalCost }} </div>
-    <ButtonClicked
-      @clicked="clickedButtonAdd"
-      :showAddForm="showAddForm"
-      :buttonNameShow="`Add new cost +`"
-      :buttonNameHide="`Hide form -`"
-      />
-      <AddPaymentForm v-if="showAddForm"
-      :categoryList="categoryList"
-      @add-payment="addPayment"
-      />
+    <div class="header">My personal costs</div>
+      <div class="wrapper-buttonBox">
+          <div class="button_box">
+            <button class="button" @click="authModal">Auth</button>
+            <button class="button" @click="addPayment">Add Payment</button>
+        </div>
+      </div>
       <PaymentsDisplay
         :paymentsList="paymentsListLoc"
+        @clickedcontextmenu="showContextMenu"
         show
       />
       <PagiNation
       @clickpage="createPaymentsList"
       :pageCount="pageCount"
       />
- </div>
+  </div>
 </template>
 
 <script>
 import PaymentsDisplay from '../src/components/PaymentsDisplay.vue'
-import AddPaymentForm from '../src/components/AddPaymentForm.vue'
-import ButtonClicked from '../src/components/ButtonClicked.vue'
 import PagiNation from '../src/components/Pagination.vue'
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 
 export default {
   name: 'DashBoard',
   data: () => ({
-    paymentsListLoc: [],
-    showAddForm: false,
-    currentPage: 1
+    showAddForm1: false,
+    modalSettings: {},
+    showModal: false
   }),
   components: {
     PaymentsDisplay,
-    AddPaymentForm,
-    ButtonClicked,
     PagiNation
   },
   computed: {
-    ...mapGetters(['paymentsList', 'paymentsListByPage', 'categoryList', 'pageCount', 'paymentsList_Short', 'addPage5Exist', 'totalCost'])
+    ...mapGetters(['paymentsList', 'paymentsListByPage', 'pageCount', 'addPage5Exist', 'totalCost', 'currentPage', 'paymentsListLoc', 'showAddForm'])
   },
   methods: {
-    ...mapActions(['fetchCategoryData', 'addNewPayment', 'whatchPageCount', 'countTotalCost']),
+    ...mapActions(['fetchCategoryData', 'whatchPageCount', 'countTotalCost']),
     ...mapMutations(['ADD_PAYMENT_DATA']),
-
-    addPayment (data) {
-      this.$store.dispatch('addNewPayment', data)
-      this.createPaymentsList(this.currentPage)
+    addPayment () {
+      this.$modal.show({ title: 'Add new payment', content: 'addPaymentForm' })
+    },
+    authModal () {
+      this.$modal.show({ title: 'Auth', content: 'auth' })
     },
     clickedButtonAdd () {
-      this.showAddForm = !this.showAddForm
+      this.$store.commit('SET_SHOW_ADD_FORM', !this.showAddForm1)
+      this.showAddForm1 = this.showAddForm
+    },
+    clickedClose () {
+      this.showAddForm1 = this.showAddForm
+    },
+    showContextMenu () {
+      console.log('1')
+      this.$modal.show({ title: 'ContexMenu', content: 'contextMenu' })
     },
     createPaymentsList (n) {
-      this.currentPage = n
-      this.$store.dispatch('fetchData', this.currentPage)
-      this.paymentsListLoc = this.paymentsListByPage[`page${this.currentPage}`]
-      this.$store.dispatch('countTotalCost')
+      this.$store.dispatch('createPaymentsList', n)
     }
   },
   created () {
+    this.showAddForm1 = this.showAddForm
+    console.log('showAddForm1 ' + this.showAddForm1)
+    console.log('showAddForm ' + this.showAddForm)
     this.fetchCategoryData()
     if (this.$route.params.page) {
       this.currentPage = Number(this.$route.params.page)
