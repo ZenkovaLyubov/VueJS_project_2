@@ -137,7 +137,9 @@ export default new Vuex.Store({
     totalCost: 0,
     currentPage: 1,
     showAddForm: false,
-    editRow: {}
+    editRow: {},
+    top: 0,
+    right: 0
   },
   mutations: {
     SET_PAYMENTS_LIST_BY_PAGE (state, { page, initialPaymentsList }) {
@@ -177,6 +179,12 @@ export default new Vuex.Store({
       console.log(editId)
       state.paymentsListByPage[`page${state.currentPage}`].splice(editId, 1)
       state.editRow = {}
+    },
+    SET_TOP (state, top) {
+      state.top = top
+    },
+    SET_RIGHT (state, right) {
+      state.right = right
     }
   },
   getters: {
@@ -189,7 +197,9 @@ export default new Vuex.Store({
     totalCost: (state) => state.totalCost,
     currentPage: (state) => state.currentPage,
     paymentsListLoc: (state) => state.paymentsListLoc,
-    editRow: (state) => state.editRow
+    editRow: (state) => state.editRow,
+    top: (state) => state.top,
+    right: (state) => state.right
   },
   actions: {
     fetchData ({ commit, state }, page) {
@@ -234,36 +244,20 @@ export default new Vuex.Store({
       dispatch('fetchData', state.currentPage)
       // this.paymentsListLoc = this.paymentsListByPage[`page${this.currentPage}`]
       commit('SET_PAYMENTS_LIST_LOC', state.paymentsListByPage[`page${state.currentPage}`])
-      dispatch('countTotalCost')
+      // dispatch('countTotalCost')
     },
     clickedButtonAdd (commit, showAddForm1) {
-      console.log('88')
       console.log(showAddForm1)
       commit('SET_SHOW_ADD_FORM', showAddForm1)
-      // state.showAddForm = !showAddForm1
-      console.log('99')
-      console.log(showAddForm1)
     },
     deletePayment ({ commit, state }) {
       commit('DELETE_ROW')
       let keys = []
       keys = state.paymentsListByPage[`page${state.currentPage}`].length
-      console.log('10')
-      console.log(keys)
       if (keys === 0) {
-        console.log('11')``
-        delete state.paymentsListByPage[`page${state.currentPage}`]
+        // delete state.paymentsListByPage[`page${state.currentPage}`]
+        // state.paymentsListByPage[`page${state.currentPage}`]
       }
-      //  keys = Object.keys(state.paymentsListByPage)
-      // if ((!keys.includes(`page${state.pageCount + 1}`) && (state.rowCount === 5))) {
-      //   state.rowCount = 0
-      //   state.paymentsListByPage[`page${state.pageCount + 1}`] = []
-      //   state.addPage5Exist = true
-      //   state.pageCount += 1
-      // }
-      // state.idRow += 1
-      // commit('ADD_PAYMENT_DATA', newPayment)
-      // state.rowCount += 1
     }
   },
   modules: {

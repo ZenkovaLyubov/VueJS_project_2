@@ -55,7 +55,6 @@ export default {
       this.showAddForm1 = this.showAddForm
     },
     showContextMenu () {
-      console.log('1')
       this.$modal.show({ title: 'ContexMenu', content: 'contextMenu' })
     },
     createPaymentsList (n) {

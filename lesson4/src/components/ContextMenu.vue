@@ -1,6 +1,6 @@
 <template>
   <div class="boxLink_menu">
-    <div class="contextMenu_boxLink">
+    <div class="contextMenu_boxLink" :style="styleObj">
       <a href="#" class="link_context" @click="editCost">Edit</a>
       <a href="#" class="link_context" @click="deleteCost">Delete</a>
     </div>
@@ -10,15 +10,30 @@
 <script>
 export default {
   name: 'ContextMenu',
+  data: () => ({
+    top: 0,
+    right: 0,
+    color: 'red'
+  }),
+  computed: {
+    styleObj () {
+      return {
+        top: String(this.$store.getters.top) + 'px',
+        right: String(this.$store.getters.right) + 'px'
+      }
+    }
+  },
   methods: {
     editCost () {
+      this.$context.hide()
       this.$modal.show({ title: 'Edit payment', content: 'addPaymentForm', op: 'edit' })
+      this.$store.editRow = {}
     },
     deleteCost () {
       // this.$store.commit('DELETE_ROW')
       this.$store.dispatch('deletePayment')
       this.$store.editRow = {}
-      this.$modal.hide()
+      this.$context.hide()
     }
   }
 }

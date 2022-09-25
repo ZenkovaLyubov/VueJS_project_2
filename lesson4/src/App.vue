@@ -32,6 +32,7 @@
       :settings="modalSettings"
       :data="modalData"
       />
+      <ContextMenu v-if="showContext"/>
       </transition>
     </div>
   </div>
@@ -51,52 +52,40 @@ export default {
     // DashBoard,
     // AboutPage,
     // NotFound
-    ModalWindowAddPayment: () => import(/* webpackChunkName: "ModalWindow" */ '@/components/ModalWindowAddPayment.vue')
+    ModalWindowAddPayment: () => import(/* webpackChunkName: "ModalWindow" */ '@/components/ModalWindowAddPayment.vue'),
+    ContextMenu: () => import(/* webpackChunkName: "ModalWindow" */ '@/components/ContextMenu.vue')
   },
   data: () => ({
     // page: 'dashboard'
     showModal: false,
+    showContext: false,
     modalSettings: {},
-    modalData: []
+    modalData: [],
+    listContextMenu: []
   }),
   methods: {
+    contextOpen (listContextMenu) {
+      this.listContextMenu = listContextMenu
+      this.showContext = true
+    },
+    contextClose () {
+      this.showContext = false
+    },
     modalOpen (settings, modalData) {
       this.modalSettings = settings
       this.showModal = true
       this.modalData = modalData
     },
-    // goToPage () {
-    //   // this.$router.push('/about')
-    //   this.$router.push({
-    //     name: 'about',
-    //     params: {
-    //       a: 'qwerty'
-    //     }
-    //   })
-    // }
-    // setPage () {
-    //   // console.log(e.target)
-    //   // this.page = window.location.hash.slice(1)
-    //   this.page = window.location.pathname.slice(1)
-    //   console.log(this.page)
-    // },
-    // pushHistory (e) {
-    //   if (!e.target.classList.contains('router-link')) return
-    //   window.history.pushState({}, '', e.target.href)
-    //   this.setPage()
-    // }
     modalClose () {
       this.showModal = false
     }
   },
   mounted () {
     console.log(this.$modal)
-    // window.addEventListener('hashchange', this.setPage())
-    // window.addEventListener('popstate', this.setPage())
-    // console.log(this.$router)
-    // console.log(this.$route)
     this.$modal.EventBus.$on('show', this.modalOpen)
     this.$modal.EventBus.$on('hide', this.modalClose)
+    this.$context.EventBus.$on('show', this.contextOpen)
+    this.$context.EventBus.$on('hide', this.contextClose)
   }
 }
 </script>
