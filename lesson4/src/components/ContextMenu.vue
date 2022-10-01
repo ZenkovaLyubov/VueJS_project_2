@@ -1,10 +1,17 @@
 <template>
-  <div class="boxLink_menu">
+  <v-card
+  class="text-center pa-2">
+    <div>
+      <a href="#" class="link_context" @click="editCost">Edit</a>
+      <a href="#" class="link_context" @click="deleteCost">Delete</a>
+    </div>
+  </v-card>
+  <!-- <div class="boxLink_menu">
     <div class="contextMenu_boxLink" :style="styleObj">
       <a href="#" class="link_context" @click="editCost">Edit</a>
       <a href="#" class="link_context" @click="deleteCost">Delete</a>
     </div>
-  </div>
+  </div> -->
 </template>
 
 <script>

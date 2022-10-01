@@ -1,4 +1,4 @@
-import { mount } from "@vue/test-utils"
+import { mount } from '@vue/test-utils'
 import CalcFunc from '../../src/components/CalcFunc.vue'
 
 // describe('Calculator testing', () => {
@@ -142,7 +142,7 @@ describe('Calculator testing', () => {
     const checkboxkeyboardShow = wrapper.find('input[id=keyboardShow]')
 
     checkboxkeyboardShow.trigger('click')
-    let j=0
+    let j = 0
     for (let i = 0; i < 11; i++) {
       if (wrapper.find(`button[id="${i}"]`)) {
         j++

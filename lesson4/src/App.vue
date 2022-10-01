@@ -1,57 +1,49 @@
 <template>
-  <div id="app">
-    <div class="container">
-      <!-- <header>
-        <div class="header">My personal costs: {{ totalCost }} </div>
-      </header> -->
-      <header>
-        <!-- <nav class="nav_block" @click.prevent="pushHistory"> -->
-        <nav class="nav_block">
-        <!-- <a href="/#dashboard" class="router-link">Dashboard</a>
-        <a href="/#about" class="router-link">About</a>
-        <a href="/#notfound" class="router-link">Not Found</a> -->
-        <!-- <a href="/dashboard" class="router-link">Dashboard</a>
-        <a href="/about" class="router-link">About</a>
-        <a href="/notfound" class="router-link">Not Found</a> -->
-        <router-link to="/dashboard" class="router-link">Dashboard</router-link>
-        <router-link to="/about" class="router-link">About</router-link>
-        <router-link to="/notfound" class="router-link">Not Found</router-link>
-        </nav>
-      </header>
+  <v-app>
+    <v-app-bar
+      app
+      color="teal"
+      dark
+      flat
+    >
+        <v-btn to="/dashboard" :ripple="false" plain>Dashboard</v-btn>
+        <v-btn to="/about" :ripple="false" plain>About</v-btn>
+    </v-app-bar>
 
-      <main>
-        <!-- <DashBoard v-if="page === 'dashboard'"/>
-        <AboutPage v-if="page === 'about'"/>
-        <NotFound v-if="page === 'notfound'"/> -->
-        <router-view/>
-        <!-- <button @click="goToPage">About</button> -->
-      </main>
+    <v-main>
       <transition name="fade">
         <ModalWindowAddPayment
-      v-if="showModal"
-      :settings="modalSettings"
-      :data="modalData"
-      />
-      <ContextMenu v-if="showContext"/>
+        v-if="showModal"
+        :settings="modalSettings"
+        :data="modalData"
+        />
+
       </transition>
-    </div>
-  </div>
+      <transition name="fade">
+        <v-dialog v-model="showContext" max-width="110px">
+        <v-card>
+          <ContextMenu v-if="showContext"/>
+        </v-card>
+        </v-dialog>
+      </transition>
+
+      <!-- <MyButton>
+        <template #prepend>
+          <v-icon>mdi-plus</v-icon>
+        </template>
+        Click
+      </MyButton>
+      <MyButton>Click2</MyButton> -->
+      <router-view/>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
-
-// import HelloWorld from './components/HelloWorld.vue'
-// import AboutPage from '../pages/AboutPage.vue'
-// import NotFound from '../pages/NotFound.vue'
-// import DashBoard from '../pages/DashBoard.vue'
-// import ModalWindowAddPayment from './components/ModalWindowAddPayment.vue'
-
+// import MyButton from './components/MyButton.vue'
 export default {
   name: 'App',
   components: {
-    // DashBoard,
-    // AboutPage,
-    // NotFound
     ModalWindowAddPayment: () => import(/* webpackChunkName: "ModalWindow" */ '@/components/ModalWindowAddPayment.vue'),
     ContextMenu: () => import(/* webpackChunkName: "ModalWindow" */ '@/components/ContextMenu.vue')
   },
@@ -89,7 +81,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" module>
-
-</style>

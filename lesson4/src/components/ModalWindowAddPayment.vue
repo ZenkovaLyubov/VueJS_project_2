@@ -1,21 +1,30 @@
 <template>
-  <div class="wrapper">
+<v-container>
+
+   <div class="wrapper">
     <div class="content">
-      <div v-if="title" class="title_modal">{{ title }}</div>
+      <!-- <div v-if="title" class="title_modal">{{ title }}</div> -->
+      <div v-if="title" class="text-h6 text-right pr-2">{{ title }}</div>
       <div class="content">
         <transition name="fade">
-        <AddPaymentForm
-        v-if="settings.content === 'addPaymentForm'"
-        :categoryList="categoryList"
-        @add-payment="addPayment"
-        />
-       </transition>
+          <AddPaymentForm
+          v-if="settings.content === 'addPaymentForm'"
+          :categoryList="categoryList"
+          @add-payment="addPayment"
+          />
+          <!-- <AddPaymentForm/> -->
+        </transition>
         <AuthForm v-if="settings.content === 'auth'"/>
-        <ContextMenu v-if="settings.content === 'contextMenu'"/>
+
+        <v-dialog>
+          <ContextMenu v-if="settings.content === 'contextMenu'"/>
+        </v-dialog>
+
+        <!-- <ContextMenu v-if="settings.content === 'contextMenu'"/> -->
         <!-- <component :is="settings.content"/> -->
       </div>
         <footer>
-          <ButtonClicked
+          <ButtonClicked class="text-right pr-2"
           @clicked="clickedButtonAdd"
           :showAddForm="showAddForm"
           :buttonNameShow="`Add new cost +`"
@@ -24,11 +33,12 @@
         </footer>
     </div>
   </div>
+</v-container>
 </template>
 
 <script>
 import AddPaymentForm from './AddPaymentForm.vue'
-import AuthForm from './AuthForm.vue'
+// import AuthForm from './AuthForm.vue'
 import ButtonClicked from './ButtonClicked.vue'
 import ContextMenu from './ContextMenu.vue'
 import { mapActions, mapGetters } from 'vuex'
@@ -55,7 +65,7 @@ export default {
     // AuthForm: () => import(/* webpackChunkName: "AuthForm" */ '@/components/AuthForm.vue')
     AddPaymentForm,
     ButtonClicked,
-    AuthForm,
+    // AuthForm,
     ContextMenu
   },
   computed: {

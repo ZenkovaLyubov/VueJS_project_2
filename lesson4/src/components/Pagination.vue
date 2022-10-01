@@ -1,7 +1,10 @@
 <template>
-   <div class="page_box">
+   <!-- <div class="page_box">
       <a href="#" class="page_link" v-for="n in pageCount" :key="n" v-bind:class="[(n === nameActiveLink()) ? 'pageActive' : '']" v-on:click="clickPage(n)">{{n}}</a>
-  </div>
+  </div> -->
+  <v-container>
+    <v-pagination v-model="pageActive" :length="pageCount" color="teal" @input="clickPage(pageActive)"/>
+  </v-container>
 </template>
 
 <script>

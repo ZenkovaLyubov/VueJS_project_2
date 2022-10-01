@@ -1,8 +1,17 @@
 <template>
-  <div>
+    <v-card class="text-left pa-8">
+    <v-text-field v-model="date" label="Date"/>
+    <v-select
+    v-model="category"
+    label="Category"
+    :items="categoryList"
+    />
+    <v-text-field v-model="value" label="Value"/>
+    <v-btn @click="addPayment">Save payment</v-btn>
+    </v-card>
+  <!-- <div>
     <form class="inputBox" action="#">
       <input class="payment_input" type="text" placeholder="Value" v-model="value">
-      <!-- <input class="payment_input" type="text" placeholder="Category" v-model="category"> -->
       <select class="payment_input" v-model="category">
         <option
           v-for="category of categoryList"
@@ -23,17 +32,17 @@
       <button class="button" @click="addPayment">Save</button>
     </form>
 
-  </div>
+  </div> -->
 </template>
 
 <script>
-import ButtonClicked from './ButtonClicked.vue'
-import AddCategory from './AddCategory.vue'
+// import ButtonClicked from './ButtonClicked.vue'
+// import AddCategory from './AddCategory.vue'
 export default {
   name: 'AddPaymentForm',
   components: {
-    ButtonClicked,
-    AddCategory
+    // ButtonClicked,
+    // AddCategory
   },
   props: {
     categoryList: {
