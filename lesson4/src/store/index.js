@@ -139,7 +139,8 @@ export default new Vuex.Store({
     showAddForm: false,
     editRow: {},
     top: 0,
-    right: 0
+    right: 0,
+    categoryListTotal: []
   },
   mutations: {
     SET_PAYMENTS_LIST_BY_PAGE (state, { page, initialPaymentsList }) {
@@ -185,6 +186,11 @@ export default new Vuex.Store({
     },
     SET_RIGHT (state, right) {
       state.right = right
+    },
+    CATEGORY_LIST_TOTAL (state, { categoryTotal, sum }) {
+      // state.categoryListTotal[categoryTotal] = sum
+      state.categoryListTotal.push({'category': categoryTotal, 'total': sum})
+
     }
   },
   getters: {
@@ -199,7 +205,8 @@ export default new Vuex.Store({
     paymentsListLoc: (state) => state.paymentsListLoc,
     editRow: (state) => state.editRow,
     top: (state) => state.top,
-    right: (state) => state.right
+    right: (state) => state.right,
+    categoryListTotal: (state) => state.categoryListTotal
   },
   actions: {
     fetchData ({ commit, state }, page) {
@@ -258,7 +265,19 @@ export default new Vuex.Store({
         // delete state.paymentsListByPage[`page${state.currentPage}`]
         // state.paymentsListByPage[`page${state.currentPage}`]
       }
-    }
+    },
+    countTotalCostForCategory ({ commit, state }) {
+      for (const key in state.categoryList.categoryList) {
+        let categoryTotal = state.categoryList.categoryList[key]
+        let sum = 0;
+        Object.values(API_DATA).forEach(v=>{
+        v.filter(el => el.category === categoryTotal).forEach(x => {sum+=x.value})
+        // categoryListTotal[state.categoryList.categoryList[key]] = sum
+      });
+        commit('CATEGORY_LIST_TOTAL', { categoryTotal, sum })
+      }
+      console.log('categoryListTotal', state.categoryListTotal)
+    },
   },
   modules: {
     categoryList

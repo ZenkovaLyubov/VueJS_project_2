@@ -1,5 +1,5 @@
 <template>
-    <v-card class="text-left pa-8">
+    <v-card class="text-left pa-8" width="500px">
     <v-text-field v-model="date" label="Date"/>
     <v-select
     v-model="category"

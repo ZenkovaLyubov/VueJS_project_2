@@ -4,7 +4,7 @@
       <div class="text-h5 text-sm-h3">My personal costs:</div>
     </v-row>
     <v-row>
-      <v-col>
+      <v-col cols="8">
         <v-dialog v-model="showModal">
         <template v-slot:activator="{ on }">
         <v-btn
@@ -36,7 +36,9 @@
           />
         </v-row>
       </v-col>
-      <v-col>Graph</v-col>
+
+      <v-col cols="4"><canvas id="costsChart"></canvas></v-col>
+
     </v-row>
   </v-container>
   <!-- <div>
@@ -63,22 +65,63 @@
 import PaymentsDisplay from '../src/components/PaymentsDisplay.vue'
 import PagiNation from '../src/components/Pagination.vue'
 import { mapActions, mapMutations, mapGetters } from 'vuex'
-// import AddPaymentForm from '@/components/AddPaymentForm.vue'
+import { Chart, registerables } from 'chart.js'
+
+Chart.register(...registerables)
 
 export default {
   name: 'DashBoard',
-  data: () => ({
-    showAddForm1: false,
-    modalSettings: {},
-    showModal: false
-  }),
+  // mixins: [reactiveProp],
+  data () {
+    return {
+      showAddForm1: false,
+      modalSettings: {},
+      showModal: false,
+      categoryTotal: [],
+      sumCategory: []
+    }
+  },
   components: {
     PaymentsDisplay,
     PagiNation
-    // AddPaymentForm
   },
   computed: {
     ...mapGetters(['paymentsList', 'paymentsListByPage', 'pageCount', 'addPage5Exist', 'totalCost', 'currentPage', 'paymentsListLoc', 'showAddForm'])
+  },
+  mounted () {
+    const ctx = document.getElementById('costsChart')
+    this.categoryTotal = this.$store.getters.categoryListTotal.map(el => el.category)
+    this.sumCategory = this.$store.getters.categoryListTotal.map(el => el.total)
+
+    const data = {
+      // labels: [
+      //   'Red',
+      //   'Blue',
+      //   'Yellow'
+      // ],
+      labels: this.categoryTotal,
+      datasets: [{
+        label: 'costs',
+        data: this.sumCategory,
+        // this.$store.getters.categoryListTotal[],
+        backgroundColor: [
+          'rgb(255, 99, 132)',
+          'rgb(54, 162, 235)',
+          'rgb(255, 205, 86)',
+          // 'rgb(255, 230, 132)',
+          'rgb(130, 162, 235)'
+        ],
+        hoverOffset: 4
+      }]
+    }
+
+    const config = {
+      type: 'doughnut',
+      data: data,
+    }
+
+    const myChart = new Chart(ctx, config)
+    myChart
   },
   methods: {
     ...mapActions(['fetchCategoryData', 'whatchPageCount', 'countTotalCost']),
@@ -101,7 +144,7 @@ export default {
     },
     createPaymentsList (n) {
       this.$store.dispatch('createPaymentsList', n)
-    }
+    },
   },
   created () {
     this.showAddForm1 = this.showAddForm
@@ -115,6 +158,9 @@ export default {
     if (this.$route.name === 'AddPayment') {
       this.clickedButtonAdd()
     }
+    // this.$store.dispatch('countTotalCostForCategory', this.$store.getters.categoryList)
+    this.$store.dispatch('countTotalCostForCategory')
+    console.log('test2', this.$store.getters.categoryList[1])
   }
 }
 </script>

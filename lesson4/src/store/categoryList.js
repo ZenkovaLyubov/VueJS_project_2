@@ -16,11 +16,14 @@ export default {
   },
   actions: {
     fetchCategoryData ({ commit }) {
-      setTimeout(() => {
-        const categoryList = ['Food', 'Transport', 'Education', 'Sport']
+      // setTimeout(() => {
+      //   const categoryList = ['Food', 'Transport', 'Education', 'Sport']
 
-        commit('SET_CATEGORY_LIST', categoryList)
-      }, 1000)
+      //   commit('SET_CATEGORY_LIST', categoryList)
+      // }, 1000)
+      const categoryList = ['Food', 'Transport', 'Education', 'Sport']
+      commit('SET_CATEGORY_LIST', categoryList)
+
     }
 
   }
