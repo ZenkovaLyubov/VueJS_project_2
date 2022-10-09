@@ -32,7 +32,7 @@ const API_DATA = {
   {
     id: 5,
     date: '24.03.2020',
-    category: 'Transport',
+    category: 'Sport',
     value: 50
   }],
   page2: [{
@@ -56,7 +56,7 @@ const API_DATA = {
   {
     id: 9,
     date: '28.03.2020',
-    category: 'Food',
+    category: 'Sport',
     value: 90
   },
   {
@@ -122,7 +122,7 @@ const API_DATA = {
   {
     id: 20,
     date: '24.03.2020',
-    category: 'Transport',
+    category: 'Education',
     value: 200
   }]
 }
@@ -188,9 +188,7 @@ export default new Vuex.Store({
       state.right = right
     },
     CATEGORY_LIST_TOTAL (state, { categoryTotal, sum }) {
-      // state.categoryListTotal[categoryTotal] = sum
       state.categoryListTotal.push({'category': categoryTotal, 'total': sum})
-
     }
   },
   getters: {
@@ -266,18 +264,37 @@ export default new Vuex.Store({
         // state.paymentsListByPage[`page${state.currentPage}`]
       }
     },
+
     countTotalCostForCategory ({ commit, state }) {
+      state.categoryListTotal.length = 0
+      let TotalPages = []
       for (const key in state.categoryList.categoryList) {
         let categoryTotal = state.categoryList.categoryList[key]
         let sum = 0;
-        Object.values(API_DATA).forEach(v=>{
-        v.filter(el => el.category === categoryTotal).forEach(x => {sum+=x.value})
-        // categoryListTotal[state.categoryList.categoryList[key]] = sum
-      });
+        Object.values(API_DATA).forEach(v=>{v.filter(el => el.category === categoryTotal).forEach(x => {sum+=x.value})
+        });
+        TotalPages.push({'category': categoryTotal, 'total': sum})
+      }
+      console.log('TotalPages 1', TotalPages)
+      if (state.pageCount > 4) {
+        for (const key in state.categoryList.categoryList) {
+          let categoryTotal = state.categoryList.categoryList[key]
+          let sum = 0;
+          for (let i = 5; i <= state.pageCount; i++) {
+            state.paymentsListByPage[`page${i}`].filter(el => el.category === categoryTotal).forEach(x => {sum+= +x.value})
+          }
+        TotalPages.push({'category': categoryTotal, 'total': sum})
+        }
+      }
+      for (const key in state.categoryList.categoryList) {
+        let categoryTotal = state.categoryList.categoryList[key]
+        let sum = 0;
+        TotalPages.filter(el => el.category === categoryTotal).forEach(x => {sum+=x.total})
+
         commit('CATEGORY_LIST_TOTAL', { categoryTotal, sum })
       }
       console.log('categoryListTotal', state.categoryListTotal)
-    },
+    }
   },
   modules: {
     categoryList

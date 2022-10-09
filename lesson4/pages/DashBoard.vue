@@ -37,33 +37,17 @@
         </v-row>
       </v-col>
 
-      <v-col cols="4"><canvas id="costsChart"></canvas></v-col>
+      <Doughnut :chart-data="chartData" />
 
     </v-row>
   </v-container>
-  <!-- <div>
-    <div class="header">My personal costs</div>
-      <div class="wrapper-buttonBox">
-          <div class="button_box">
-            <button class="button" @click="authModal">Auth</button>
-            <button class="button" @click="addPayment">Add Payment</button>
-        </div>
-      </div>
-      <PaymentsDisplay
-        :paymentsList="paymentsListLoc"
-        @clickedcontextmenu="showContextMenu"
-        show
-      />
-      <PagiNation
-      @clickpage="createPaymentsList"
-      :pageCount="pageCount"
-      />
-  </div> -->
+
 </template>
 
 <script>
 import PaymentsDisplay from '../src/components/PaymentsDisplay.vue'
 import PagiNation from '../src/components/Pagination.vue'
+import { Doughnut } from 'vue-chartjs'
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import { Chart, registerables } from 'chart.js'
 
@@ -71,7 +55,6 @@ Chart.register(...registerables)
 
 export default {
   name: 'DashBoard',
-  // mixins: [reactiveProp],
   data () {
     return {
       showAddForm1: false,
@@ -83,45 +66,32 @@ export default {
   },
   components: {
     PaymentsDisplay,
-    PagiNation
+    PagiNation,
+    Doughnut
+  },
+  mounted() {
+    this.renderLineChart(),
+    this.categoryTotal = this.$store.getters.categoryListTotal.map(el => el.category),
+    this.sumCategory = this.$store.getters.categoryListTotal.map(el => el.total)
   },
   computed: {
-    ...mapGetters(['paymentsList', 'paymentsListByPage', 'pageCount', 'addPage5Exist', 'totalCost', 'currentPage', 'paymentsListLoc', 'showAddForm'])
-  },
-  mounted () {
-    const ctx = document.getElementById('costsChart')
-    this.categoryTotal = this.$store.getters.categoryListTotal.map(el => el.category)
-    this.sumCategory = this.$store.getters.categoryListTotal.map(el => el.total)
-
-    const data = {
-      // labels: [
-      //   'Red',
-      //   'Blue',
-      //   'Yellow'
-      // ],
-      labels: this.categoryTotal,
-      datasets: [{
-        label: 'costs',
-        data: this.sumCategory,
-        // this.$store.getters.categoryListTotal[],
-        backgroundColor: [
-          'rgb(255, 99, 132)',
-          'rgb(54, 162, 235)',
-          'rgb(255, 205, 86)',
-          // 'rgb(255, 230, 132)',
-          'rgb(130, 162, 235)'
-        ],
-        hoverOffset: 4
-      }]
+    ...mapGetters(['paymentsList', 'paymentsListByPage', 'pageCount', 'addPage5Exist', 'totalCost', 'currentPage', 'paymentsListLoc', 'showAddForm']),
+    chartData: function() { return {
+        labels: this.categoryTotal,
+        datasets: [
+          {
+            backgroundColor: [
+            'rgb(255, 99, 132)',
+            'rgb(54, 162, 235)',
+            'rgb(255, 205, 86)',
+            'rgb(130, 162, 235)'
+            ],
+            data: this.sumCategory
+          }
+        ]
+      }
     }
 
-    const config = {
-      type: 'doughnut',
-      data: data,
-    }
-
-    const myChart = new Chart(ctx, config)
-    myChart
   },
   methods: {
     ...mapActions(['fetchCategoryData', 'whatchPageCount', 'countTotalCost']),
@@ -145,6 +115,9 @@ export default {
     createPaymentsList (n) {
       this.$store.dispatch('createPaymentsList', n)
     },
+    renderLineChart () {
+      return this.chartData
+    }
   },
   created () {
     this.showAddForm1 = this.showAddForm
@@ -158,9 +131,7 @@ export default {
     if (this.$route.name === 'AddPayment') {
       this.clickedButtonAdd()
     }
-    // this.$store.dispatch('countTotalCostForCategory', this.$store.getters.categoryList)
     this.$store.dispatch('countTotalCostForCategory')
-    console.log('test2', this.$store.getters.categoryList[1])
   }
 }
 </script>

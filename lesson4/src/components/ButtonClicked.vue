@@ -1,6 +1,10 @@
 <template>
    <div>
-    <button v-on:click="showForm" class="button">{{nameButton()}}</button>
+    <v-btn
+    color="teal"
+    dark
+    v-on:click="showForm"
+    class="button">{{nameButton()}}</v-btn>
   </div>
 </template>
 

@@ -6,43 +6,36 @@
     label="Category"
     :items="categoryList"
     />
-    <v-text-field v-model="value" label="Value"/>
-    <v-btn @click="addPayment">Save payment</v-btn>
-    </v-card>
-  <!-- <div>
-    <form class="inputBox" action="#">
-      <input class="payment_input" type="text" placeholder="Value" v-model="value">
-      <select class="payment_input" v-model="category">
-        <option
-          v-for="category of categoryList"
-          :value="category"
-          :key="category"
-        >{{ category }}</option>
-      </select>
-      <ButtonClicked
-      @clicked="clickedButtonAdd"
-      :showAddForm="showAddFormCategory"
-      :buttonNameShow="`Add Category +`"
-      :buttonNameHide="`Hide form -`"
-      />
+    <ButtonClicked
+    @clicked="clickedButtonAdd"
+    :showAddForm="showAddFormCategory"
+    :buttonNameShow="`Add Category +`"
+    :buttonNameHide="`Hide form -`"/>
+
+    <v-card>
       <AddCategory v-if="showAddFormCategory"
       @add-category="createCategory"
       />
-      <input class="payment_input" type="text" placeholder="Date" v-model="date">
-      <button class="button" @click="addPayment">Save</button>
-    </form>
+    </v-card>
 
-  </div> -->
+    <v-text-field v-model="value" label="Value"/>
+
+    <v-btn
+    color="teal"
+    dark
+    @click="addPayment">Save payment</v-btn>
+
+    </v-card>
 </template>
 
 <script>
-// import ButtonClicked from './ButtonClicked.vue'
-// import AddCategory from './AddCategory.vue'
+import ButtonClicked from './ButtonClicked.vue'
+import AddCategory from './AddCategory.vue'
 export default {
   name: 'AddPaymentForm',
   components: {
-    // ButtonClicked,
-    // AddCategory
+    ButtonClicked,
+    AddCategory
   },
   props: {
     categoryList: {

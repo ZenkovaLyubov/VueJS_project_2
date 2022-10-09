@@ -1,11 +1,13 @@
 <template>
-  <div>
+  <v-card>
     <form class="inputBox inside" action="#">
-      <input class="payment_input" type="text" placeholder="New category" v-model="category">
-      <!-- <input class="payment_input" type="text" placeholder="Category" v-model="category"> -->
-      <button class="button" @click="addCategory">Save category</button>
+      <v-text-field label="New category" v-model="category"/>
+      <v-btn class="button"
+      color="teal"
+      dark
+      @click="addCategory">Save category</v-btn>
     </form>
-  </div>
+  </v-card>
 </template>
 
 <script>
